@@ -19,11 +19,13 @@ resource "azurerm_monitor_action_group" "main" {
 resource "azurerm_monitor_activity_log_alert" "main" {
   name                = "example-activitylogalert"
   resource_group_name = azurerm_resource_group.main.name
-  scopes              = [azurerm_resource_group.main.id]
-  description         = "This alert will monitor a specific storage account updates."
+  # Below is my azure subscription but i replace it with the above
+  scopes              =  [azurerm_resource_group.example.id]
+  description         = "This alert will monitor if any VM restarts"
 
   criteria {
-    resource_id    = azurerm_windows_virtual_machine.dc01.id
+    resource_id = azurerm_windows_virtual_machine.dc01.id
+    # vm -> activity log -> restart virtual machine -> json -> authorization -> action
     operation_name = "Microsoft.Compute/virtualMachines/restart/action"
     category       = "Administrative"
   }
